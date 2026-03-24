@@ -118,45 +118,35 @@
   </main>
 
   <script>
-  async function cargarInfoLanding() {
-    try {
-      const response = await fetch(https://primary-production-2cf7.up.railway.app/webhook-test/info-landing);
+    async function cargarInfoLanding() {
+      try {
+        const response = await fetch("https://primary-production-2cf7.up.railway.app/webhook-test/info-landing");
 
-      if (!response.ok) {
-        throw new Error("Error al obtener los datos");
+        if (!response.ok) {
+          throw new Error("Error al obtener los datos");
+        }
+
+        const data = await response.json();
+
+        document.getElementById("info-landing").innerHTML = `
+          <div class="info-item"><strong>Horario:</strong> ${data.horario}</div>
+          <div class="info-item"><strong>Instrucciones:</strong> ${data.instrucciones}</div>
+          <div class="info-item"><strong>Teléfono de soporte:</strong> ${data.telefono_soporte}</div>
+          <div class="info-item"><strong>Aviso del día:</strong> ${data.aviso_del_dia}</div>
+        `;
+      } catch (error) {
+        document.getElementById("info-landing").innerHTML = `
+          <div class="info-item">No se pudo cargar la información útil.</div>
+        `;
+        console.error("Error en cargarInfoLanding:", error);
       }
-
-      const data = await response.json();
-
-      document.getElementById("info-landing").innerHTML = `
-        <div class="info-item"><strong>Horario:</strong> ${data.horario}</div>
-        <div class="info-item"><strong>Instrucciones:</strong> ${data.instrucciones}</div>
-        <div class="info-item"><strong>Teléfono de soporte:</strong> ${data.telefono_soporte}</div>
-        <div class="info-item"><strong>Aviso del día:</strong> ${data.aviso_del_dia}</div>
-      `;
-    } catch (error) {
-      document.getElementById("info-landing").innerHTML = `
-        <div class="info-item">No se pudo cargar la información útil.</div>
-      `;
-      console.error(error);
     }
-  }
-
-  cargarInfoLanding();
-</script>
 
     const tareasDemo = [
       "Llamar al cliente Juan Pérez",
       "Revisar formulario recibido",
       "Confirmar visita de la tarde"
     ];
-
-    document.getElementById("info-landing").innerHTML = `
-      <div class="info-item"><strong>Horario:</strong> ${infoDemo.horario}</div>
-      <div class="info-item"><strong>Instrucciones:</strong> ${infoDemo.instrucciones}</div>
-      <div class="info-item"><strong>Teléfono de soporte:</strong> ${infoDemo.telefono}</div>
-      <div class="info-item"><strong>Aviso del día:</strong> ${infoDemo.aviso}</div>
-    `;
 
     document.getElementById("lista-tareas").innerHTML = tareasDemo
       .map(tarea => `<div class="task">${tarea}</div>`)
@@ -171,6 +161,8 @@
 
       this.reset();
     });
+
+    cargarInfoLanding();
   </script>
 </body>
 </html>

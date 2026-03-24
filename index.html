@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal del trabajador</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f5f7fb;
+      color: #222;
+    }
+
+    header {
+      background: #1f4b99;
+      color: white;
+      padding: 24px;
+      text-align: center;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 0 16px;
+    }
+
+    section {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .info-item {
+      margin-bottom: 12px;
+    }
+
+    .task {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .task:last-child {
+      border-bottom: none;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    input, textarea, button {
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: #1f4b99;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.95;
+    }
+
+    .small {
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Portal del trabajador</h1>
+    <p>Información útil, formulario y tareas del día</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>1. Información útil</h2>
+      <div id="info-landing">
+        <div class="info-item"><strong>Horario:</strong> Cargando...</div>
+        <div class="info-item"><strong>Instrucciones:</strong> Cargando...</div>
+        <div class="info-item"><strong>Teléfono de soporte:</strong> Cargando...</div>
+        <div class="info-item"><strong>Aviso del día:</strong> Cargando...</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>2. Formulario</h2>
+      <form id="miFormulario">
+        <input type="text" id="nombre" placeholder="Tu nombre" required />
+        <input type="text" id="telefono" placeholder="Tu teléfono" />
+        <textarea id="mensaje" placeholder="Escribe aquí..." rows="4"></textarea>
+        <button type="submit">Enviar</button>
+      </form>
+      <p id="respuestaFormulario" class="small"></p>
+    </section>
+
+    <section>
+      <h2>3. Tareas del día</h2>
+      <div id="lista-tareas">
+        <div class="task">Cargando tareas...</div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // De momento usamos datos de prueba
+    const infoDemo = {
+      horario: "09:00 a 18:00",
+      instrucciones: "Revisar tareas al empezar la jornada",
+      telefono: "+34 600 000 000",
+      aviso: "Hoy prioridad en llamadas pendientes"
+    };
+
+    const tareasDemo = [
+      "Llamar al cliente Juan Pérez",
+      "Revisar formulario recibido",
+      "Confirmar visita de la tarde"
+    ];
+
+    document.getElementById("info-landing").innerHTML = `
+      <div class="info-item"><strong>Horario:</strong> ${infoDemo.horario}</div>
+      <div class="info-item"><strong>Instrucciones:</strong> ${infoDemo.instrucciones}</div>
+      <div class="info-item"><strong>Teléfono de soporte:</strong> ${infoDemo.telefono}</div>
+      <div class="info-item"><strong>Aviso del día:</strong> ${infoDemo.aviso}</div>
+    `;
+
+    document.getElementById("lista-tareas").innerHTML = tareasDemo
+      .map(tarea => `<div class="task">${tarea}</div>`)
+      .join("");
+
+    document.getElementById("miFormulario").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const nombre = document.getElementById("nombre").value;
+      document.getElementById("respuestaFormulario").textContent =
+        `Formulario preparado. Más adelante lo conectaremos con n8n. Gracias, ${nombre}.`;
+
+      this.reset();
+    });
+  </script>
+</body>
+</html>

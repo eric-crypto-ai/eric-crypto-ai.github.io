@@ -118,13 +118,32 @@
   </main>
 
   <script>
-    // De momento usamos datos de prueba
-    const infoDemo = {
-      horario: "09:00 a 18:00",
-      instrucciones: "Revisar tareas al empezar la jornada",
-      telefono: "+34 600 000 000",
-      aviso: "Hoy prioridad en llamadas pendientes"
-    };
+  async function cargarInfoLanding() {
+    try {
+      const response = await fetch(https://primary-production-2cf7.up.railway.app/webhook-test/info-landing);
+
+      if (!response.ok) {
+        throw new Error("Error al obtener los datos");
+      }
+
+      const data = await response.json();
+
+      document.getElementById("info-landing").innerHTML = `
+        <div class="info-item"><strong>Horario:</strong> ${data.horario}</div>
+        <div class="info-item"><strong>Instrucciones:</strong> ${data.instrucciones}</div>
+        <div class="info-item"><strong>Teléfono de soporte:</strong> ${data.telefono_soporte}</div>
+        <div class="info-item"><strong>Aviso del día:</strong> ${data.aviso_del_dia}</div>
+      `;
+    } catch (error) {
+      document.getElementById("info-landing").innerHTML = `
+        <div class="info-item">No se pudo cargar la información útil.</div>
+      `;
+      console.error(error);
+    }
+  }
+
+  cargarInfoLanding();
+</script>
 
     const tareasDemo = [
       "Llamar al cliente Juan Pérez",

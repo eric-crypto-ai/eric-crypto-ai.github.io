@@ -185,7 +185,7 @@
       console.error('error al guardar:', error);
     }
   });
-/*
+
 async function cargarTablaIPM() {
   const tbody = document.getElementById('tablaIPM');
 
@@ -224,7 +224,7 @@ async function cargarTablaIPM() {
     `;
   }
 }
-*/
+
   async function cargarProductosIPM() {
   const selectProducto = document.getElementById('producto');
 
@@ -284,7 +284,7 @@ async function cargarTablaIPM() {
     .map(tarea => `<div class="task">${tarea}</div>`)
     .join('');
 
- // cargarTablaIPM();
+  cargarTablaIPM();
   cargarInfoLanding();
   cargarProductosIPM();
 </script>

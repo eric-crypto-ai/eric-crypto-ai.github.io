@@ -147,7 +147,6 @@
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
 
-    // Obtenemos valores del formulario
     const fecha = document.getElementById('fecha').value;
     const producto = document.getElementById('producto').value;
 
@@ -165,26 +164,20 @@
 
       const data = await respuesta.json();
 
-      // Mensaje al usuario
       if (data.ok) {
         mensajeFormulario.textContent = '✅ Dato guardado correctamente';
         form.reset();
-
-        // Opcional: recargar tabla si ya la tienes hecha
-        if (typeof cargarTablaIPM === 'function') {
-          cargarTablaIPM();
-        }
-
+        cargarTablaIPM();
       } else {
         mensajeFormulario.textContent = '❌ No se pudo guardar';
       }
 
     } catch (error) {
       mensajeFormulario.textContent = '❌ Error al conectar con el servidor';
-      console.error('Error:', error);
+      console.error('error al guardar:', error);
     }
   });
-<script>
+
   async function cargarTablaIPM() {
     const tbody = document.getElementById('tablaIPM');
 
@@ -220,54 +213,42 @@
     }
   }
 
-  cargarTablaIPM();
-</script>
-  <script>
-    async function cargarInfoLanding() {
-      try {
-        const response = await fetch("https://primary-production-2cf7.up.railway.app/webhook-test/info-landing");
+  async function cargarInfoLanding() {
+    try {
+      const response = await fetch('https://primary-production-2cf7.up.railway.app/webhook-test/info-landing');
 
-        if (!response.ok) {
-          throw new Error("Error al obtener los datos");
-        }
-
-        const data = await response.json();
-
-        document.getElementById("info-landing").innerHTML = `
-          <div class="info-item"><strong>Horario:</strong> ${data.horario}</div>
-          <div class="info-item"><strong>Instrucciones:</strong> ${data.instrucciones}</div>
-          <div class="info-item"><strong>Teléfono de soporte:</strong> ${data.telefono_soporte}</div>
-          <div class="info-item"><strong>Aviso del día:</strong> ${data.aviso_del_dia}</div>
-        `;
-      } catch (error) {
-        document.getElementById("info-landing").innerHTML = `
-          <div class="info-item">No se pudo cargar la información útil.</div>
-        `;
-        console.error("Error en cargarInfoLanding:", error);
+      if (!response.ok) {
+        throw new Error('Error al obtener los datos');
       }
+
+      const data = await response.json();
+
+      document.getElementById('info-landing').innerHTML = `
+        <div class="info-item"><strong>Horario:</strong> ${data.horario}</div>
+        <div class="info-item"><strong>Instrucciones:</strong> ${data.instrucciones}</div>
+        <div class="info-item"><strong>Teléfono de soporte:</strong> ${data.telefono_soporte}</div>
+        <div class="info-item"><strong>Aviso del día:</strong> ${data.aviso_del_dia}</div>
+      `;
+    } catch (error) {
+      document.getElementById('info-landing').innerHTML = `
+        <div class="info-item">No se pudo cargar la información útil.</div>
+      `;
+      console.error('error en cargarInfoLanding:', error);
     }
+  }
 
-    const tareasDemo = [
-      "Llamar al cliente Juan Pérez",
-      "Revisar formulario recibido",
-      "Confirmar visita de la tarde"
-    ];
+  const tareasDemo = [
+    'Llamar al cliente Juan Pérez',
+    'Revisar formulario recibido',
+    'Confirmar visita de la tarde'
+  ];
 
-    document.getElementById("lista-tareas").innerHTML = tareasDemo
-      .map(tarea => `<div class="task">${tarea}</div>`)
-      .join("");
+  document.getElementById('lista-tareas').innerHTML = tareasDemo
+    .map(tarea => `<div class="task">${tarea}</div>`)
+    .join('');
 
-    document.getElementById("miFormulario").addEventListener("submit", function(e) {
-      e.preventDefault();
-
-      const nombre = document.getElementById("nombre").value;
-      document.getElementById("respuestaFormulario").textContent =
-        `Formulario preparado. Más adelante lo conectaremos con n8n. Gracias, ${nombre}.`;
-
-      this.reset();
-    });
-
-    cargarInfoLanding();
-  </script>
+  cargarTablaIPM();
+  cargarInfoLanding();
+</script>
 </body>
 </html>

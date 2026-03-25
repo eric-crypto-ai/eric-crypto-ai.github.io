@@ -302,15 +302,6 @@ async function cargarTablaIPM() {
     }
   }
 
-  const tareasDemo = [
-    'Llamar al cliente Juan Pérez',
-    'Revisar formulario recibido',
-    'Confirmar visita de la tarde'
-  ];
-
-  document.getElementById('lista-tareas').innerHTML = tareasDemo
-    .map(tarea => `<div class="task">${tarea}</div>`)
-    .join('');
 
   cargarTablaIPM();
   cargarInfoLanding();

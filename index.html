@@ -57,7 +57,7 @@
       gap: 12px;
     }
 
-    input, textarea, button {
+    input, textarea, button, select {
       padding: 12px;
       font-size: 16px;
       border-radius: 8px;
@@ -115,9 +115,11 @@
         <label for="fecha">Fecha</label>
         <input type="date" id="fecha" name="fecha" required>
 
-        <label for="producto">Producto</label>
-        <input type="text" id="producto" name="producto" required>
 
+        <label for="producto">Producto</label>
+<select id="producto" name="producto" required>
+  <option value="">Cargando productos...</option>
+</select>
         <button type="submit">Guardar</button>
       </form>
       <p id="mensajeFormulario"></p>
@@ -223,6 +225,31 @@ async function cargarTablaIPM() {
   }
 }
 
+  async function cargarProductosIPM() {
+  const selectProducto = document.getElementById('producto');
+
+  try {
+    const respuesta = await fetch('https://primary-production-2cf7.up.railway.app/webhook/ipm-productos');
+    const data = await respuesta.json();
+
+    const items = Array.isArray(data)
+      ? (data[0]?.items || [])
+      : (data.items || []);
+
+    if (items.length === 0) {
+      selectProducto.innerHTML = '<option value="">No hay productos</option>';
+      return;
+    }
+
+    selectProducto.innerHTML = `
+      <option value="">Selecciona un producto</option>
+      ${items.map(item => `<option value="${item.producto}">${item.producto}</option>`).join('')}
+    `;
+  } catch (error) {
+    console.error('error al cargar productos:', error);
+    selectProducto.innerHTML = '<option value="">Error al cargar productos</option>';
+  }
+}
   async function cargarInfoLanding() {
     try {
       const response = await fetch('https://primary-production-2cf7.up.railway.app/webhook/info-landing');
@@ -259,6 +286,7 @@ async function cargarTablaIPM() {
 
   cargarTablaIPM();
   cargarInfoLanding();
+  cargarProductosIPM();
 </script>
 </body>
 </html>

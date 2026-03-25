@@ -178,40 +178,6 @@
     }
   });
 
-  async function cargarTablaIPM() {
-    const tbody = document.getElementById('tablaIPM');
-
-    try {
-      const respuesta = await fetch('https://primary-production-2cf7.up.railway.app/webhook/ipm-lista');
-      const data = await respuesta.json();
-
-      const items = data.items || [];
-
-      if (items.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="2">No hay datos todavía</td>
-          </tr>
-        `;
-        return;
-      }
-
-      tbody.innerHTML = items.map(item => `
-        <tr>
-          <td>${item.Fecha || ''}</td>
-          <td>${item.Producto || ''}</td>
-        </tr>
-      `).join('');
-
-    } catch (error) {
-      console.error('error al cargar ipm:', error);
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="2">Error al cargar datos</td>
-        </tr>
-      `;
-    }
-  }
 
   async function cargarInfoLanding() {
     try {
@@ -232,7 +198,40 @@
     } catch (error) {
       document.getElementById('info-landing').innerHTML = `
         <div class="info-item">No se pudo cargar la información útil.</div>
+      `;async function cargarTablaIPM() {
+  const tbody = document.getElementById('tablaIPM');
+
+  try {
+    const respuesta = await fetch('https://primary-production-2cf7.up.railway.app/webhook/ipm-lista');
+    const data = await respuesta.json();
+
+    const items = data.items || [];
+
+    if (items.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="2">No hay datos todavía</td>
+        </tr>
       `;
+      return;
+    }
+
+    tbody.innerHTML = items.map(item => `
+      <tr>
+        <td>${item.fecha || ''}</td>
+        <td>${item.producto || ''}</td>
+      </tr>
+    `).join('');
+
+  } catch (error) {
+    console.error('error al cargar ipm:', error);
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="2">Error al cargar datos</td>
+      </tr>
+    `;
+  }
+}
       console.error('error en cargarInfoLanding:', error);
     }
   }

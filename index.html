@@ -189,7 +189,7 @@
     const tbody = document.getElementById('tablaIPM');
 
     try {
-      const respuesta = await fetch('https://primary-production-2cf7.up.railway.app/webhook-test/ipm-lista');
+      const respuesta = await fetch('https://primary-production-2cf7.up.railway.app/webhook/ipm-lista');
       const data = await respuesta.json();
 
       const items = data.items || [];
@@ -211,7 +211,7 @@
       `).join('');
 
     } catch (error) {
-      console.error(error);
+      console.error('error al cargar ipm:', error);
       tbody.innerHTML = `
         <tr>
           <td colspan="2">Error al cargar datos</td>
@@ -220,9 +220,7 @@
     }
   }
 
-  // Ejecutar al cargar la página
   cargarTablaIPM();
-</script>
 </script>
   <script>
     async function cargarInfoLanding() {

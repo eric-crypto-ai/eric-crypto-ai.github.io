@@ -142,11 +142,10 @@
       </table>
     </section>
 
-    <section>
-      <h2>3. Tareas del día</h2>
-      <div id="lista-tareas"></div>
-    </section>
-  </main>
+   <section>
+  <h2>3. Tareas del día</h2>
+  <div id="lista-tareas">Cargando tareas...</div>
+</section>
 
 <script>
   const form = document.getElementById('ipmForm');
@@ -225,6 +224,35 @@ async function cargarTablaIPM() {
   }
 }
 
+  async function cargarTareas() {
+  const contenedor = document.getElementById('lista-tareas');
+
+  try {
+    const respuesta = await fetch('https://primary-production-2cf7.up.railway.app/webhook/tareas-lista');
+    const data = await respuesta.json();
+
+    const items = Array.isArray(data)
+      ? (data[0]?.items || [])
+      : (data.items || []);
+
+    if (items.length === 0) {
+      contenedor.innerHTML = '<div class="task">No hay tareas pendientes</div>';
+      return;
+    }
+
+    contenedor.innerHTML = items.map(item => `
+      <div class="task">
+        <strong>${item.tarea}</strong>
+        <div style="margin-top:8px;">
+          <button onclick="eliminarTarea('${item.id}')">Eliminar</button>
+        </div>
+      </div>
+    `).join('');
+  } catch (error) {
+    console.error('error al cargar tareas:', error);
+    contenedor.innerHTML = '<div class="task">Error al cargar tareas</div>';
+  }
+}
   async function cargarProductosIPM() {
   const selectProducto = document.getElementById('producto');
 
@@ -287,6 +315,7 @@ async function cargarTablaIPM() {
   cargarTablaIPM();
   cargarInfoLanding();
   cargarProductosIPM();
+  cargarTareas();
 </script>
 </body>
 </html>

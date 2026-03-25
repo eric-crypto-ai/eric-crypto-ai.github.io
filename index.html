@@ -184,6 +184,45 @@
       console.error('Error:', error);
     }
   });
+<script>
+  async function cargarTablaIPM() {
+    const tbody = document.getElementById('tablaIPM');
+
+    try {
+      const respuesta = await fetch('https://primary-production-2cf7.up.railway.app/webhook-test/ipm-lista');
+      const data = await respuesta.json();
+
+      const items = data.items || [];
+
+      if (items.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="2">No hay datos todavía</td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = items.map(item => `
+        <tr>
+          <td>${item.Fecha || ''}</td>
+          <td>${item.Producto || ''}</td>
+        </tr>
+      `).join('');
+
+    } catch (error) {
+      console.error(error);
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="2">Error al cargar datos</td>
+        </tr>
+      `;
+    }
+  }
+
+  // Ejecutar al cargar la página
+  cargarTablaIPM();
+</script>
 </script>
   <script>
     async function cargarInfoLanding() {

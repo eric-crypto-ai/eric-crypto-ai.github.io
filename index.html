@@ -185,33 +185,30 @@
     }
   });
 async function eliminarTarea(id) {
-    const confirmar = window.confirm('¿Seguro que quieres eliminar esta tarea?');
+  const confirmar = window.confirm('¿Seguro que quieres eliminar esta tarea?');
+  if (!confirmar) return;
 
-    if (!confirmar) {
-      return;
+  try {
+    const formData = new URLSearchParams();
+    formData.append('id', id);
+
+    const respuesta = await fetch('https://primary-production-2cf7.up.railway.app/webhook/tareas-eliminar', {
+      method: 'POST',
+      body: formData
+    });
+
+    const data = await respuesta.json();
+
+    if (data.ok) {
+      cargarTareas();
+    } else {
+      alert('No se pudo eliminar la tarea');
     }
-
-    try {
-      const respuesta = await fetch('https://primary-production-2cf7.up.railway.app/webhook/tareas-eliminar', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ id: id })
-      });
-
-      const data = await respuesta.json();
-
-      if (data.ok) {
-        cargarTareas();
-      } else {
-        alert('No se pudo eliminar la tarea');
-      }
-    } catch (error) {
-      console.error('error al eliminar tarea:', error);
-      alert('Error al conectar con el servidor');
-    }
+  } catch (error) {
+    console.error('error al eliminar tarea:', error);
+    alert('Error al conectar con el servidor');
   }
+}
 async function cargarTablaIPM() {
   const tbody = document.getElementById('tablaIPM');
 

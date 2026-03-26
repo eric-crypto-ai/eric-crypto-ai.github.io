@@ -276,60 +276,71 @@
       }
     }
 
-    async function cargarProductosIPM() {
-      const select = document.getElementById('producto');
+     async function cargarProductosIPM() {
+    const select = document.getElementById('producto');
 
-      try {
-        const res = await fetch(`${base_url}/ipm-productos`);
-        if (!res.ok) {
-          throw new Error('error_al_cargar_productos');
-        }
-
-        const data = await res.json();
-        const items = Array.isArray(data.items) ? data.items : [];
-
-        select.innerHTML = '<option value="">selecciona_un_producto</option>';
-
-        for (const item of items) {
-          const option = document.createElement('option');
-          option.value = item.producto;
-          option.textContent = item.producto;
-          select.appendChild(option);
-        }
-      } catch (error) {
-        select.innerHTML = '<option value="">error_al_cargar_productos</option>';
-        console.error('error al cargar productos ipm:', error);
+    try {
+      const res = await fetch(`${base_url}/ipm-productos`);
+      if (!res.ok) {
+        throw new Error('error_al_cargar_productos');
       }
+
+      const data = await res.json();
+
+      const items = Array.isArray(data)
+        ? (data[0]?.items || [])
+        : (data.items || []);
+
+      select.innerHTML = '<option value="">selecciona_un_producto</option>';
+
+      if (items.length === 0) {
+        select.innerHTML = '<option value="">no_hay_productos</option>';
+        return;
+      }
+
+      for (const item of items) {
+        const option = document.createElement('option');
+        option.value = item.producto || '';
+        option.textContent = item.producto || '';
+        select.appendChild(option);
+      }
+    } catch (error) {
+      select.innerHTML = '<option value="">error_al_cargar_productos</option>';
+      console.error('error al cargar productos ipm:', error);
     }
+  }
 
     async function cargarTablaIPM() {
-      const tabla = document.getElementById('tablaIPM');
+    const tabla = document.getElementById('tablaIPM');
 
-      try {
-        const res = await fetch(`${base_url}/ipm-lista`);
-        if (!res.ok) {
-          throw new Error('error_al_cargar_tabla_ipm');
-        }
-
-        const data = await res.json();
-        const items = Array.isArray(data.items) ? data.items : [];
-
-        if (items.length === 0) {
-          tabla.innerHTML = '<tr><td colspan="2">no_hay_datos_todavia</td></tr>';
-          return;
-        }
-
-        tabla.innerHTML = items.map(item => `
-          <tr>
-            <td>${item.fecha || ''}</td>
-            <td>${item.producto || ''}</td>
-          </tr>
-        `).join('');
-      } catch (error) {
-        tabla.innerHTML = '<tr><td colspan="2">error_al_cargar_datos</td></tr>';
-        console.error('error al cargar tabla ipm:', error);
+    try {
+      const res = await fetch(`${base_url}/ipm-lista`);
+      if (!res.ok) {
+        throw new Error('error_al_cargar_tabla_ipm');
       }
+
+      const data = await res.json();
+
+      const items = Array.isArray(data)
+        ? (data[0]?.items || [])
+        : (data.items || []);
+
+      if (items.length === 0) {
+        tabla.innerHTML = '<tr><td colspan="2">no_hay_datos_todavia</td></tr>';
+        return;
+      }
+
+      tabla.innerHTML = items.map(item => `
+        <tr>
+          <td>${item.fecha || ''}</td>
+          <td>${item.producto || ''}</td>
+        </tr>
+      `).join('');
+    } catch (error) {
+      tabla.innerHTML = '<tr><td colspan="2">error_al_cargar_datos</td></tr>';
+      console.error('error al cargar tabla ipm:', error);
     }
+  }
 
     function capitalizar(texto) {
       if (!texto) return '';

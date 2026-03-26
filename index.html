@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portal del trabajador</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>portal_del_trabajador</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -21,7 +21,7 @@
     }
 
     main {
-      max-width: 900px;
+      max-width: 1000px;
       margin: 30px auto;
       padding: 0 16px;
     }
@@ -31,24 +31,15 @@
       border-radius: 12px;
       padding: 20px;
       margin-bottom: 20px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     }
 
-    h2 {
+    h2, h3 {
       margin-top: 0;
     }
 
     .info-item {
       margin-bottom: 12px;
-    }
-
-    .task {
-      padding: 10px;
-      border-bottom: 1px solid #eee;
-    }
-
-    .task:last-child {
-      border-bottom: none;
     }
 
     form {
@@ -57,11 +48,12 @@
       gap: 12px;
     }
 
-    input, textarea, button, select {
-      padding: 12px;
-      font-size: 16px;
+    input, select, button, textarea {
+      padding: 10px;
+      border: 1px solid #cfd7e6;
       border-radius: 8px;
-      border: 1px solid #ccc;
+      font-size: 14px;
+      font-family: Arial, sans-serif;
     }
 
     button {
@@ -72,268 +64,411 @@
     }
 
     button:hover {
-      opacity: 0.95;
+      background: #173a78;
     }
 
-    .small {
-      font-size: 14px;
-      color: #666;
+    .mensaje {
+      margin-top: 10px;
+      font-weight: bold;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
+      margin-top: 12px;
     }
 
     th, td {
-      padding: 8px;
-      border: 1px solid #ddd;
+      padding: 10px;
+      border-bottom: 1px solid #e5e9f2;
       text-align: left;
+      vertical-align: top;
+    }
+
+    .tareas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .zona-card {
+      border: 1px solid #dbe4f0;
+      border-radius: 12px;
+      padding: 14px;
+      background: #fafcff;
+    }
+
+    .zona-card h3 {
+      margin-bottom: 10px;
+      color: #1f4b99;
+      text-transform: capitalize;
+    }
+
+    .zona-vacia {
+      color: #777;
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .tarea-card {
+      border: 1px solid #e1e8f3;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 10px;
+      background: white;
+    }
+
+    .tarea-card:last-child {
+      margin-bottom: 0;
+    }
+
+    .tarea-titulo {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .tarea-meta {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 6px;
+    }
+
+    .tarea-obs {
+      font-size: 13px;
+      color: #333;
+      background: #f6f8fc;
+      border-radius: 8px;
+      padding: 8px;
+      margin: 8px 0 10px 0;
+    }
+
+    .prioridad {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .prioridad.alta {
+      background: #fde8e8;
+      color: #b42318;
+    }
+
+    .prioridad.media {
+      background: #fff4e5;
+      color: #b54708;
+    }
+
+    .prioridad.baja {
+      background: #e8f5e9;
+      color: #1b5e20;
+    }
+
+    .boton-hecha {
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .cargando,
+    .error,
+    .sin-datos {
+      color: #666;
+      font-size: 14px;
+    }
+
+    @media (max-width: 640px) {
+      header {
+        padding: 18px;
+      }
+
+      section {
+        padding: 16px;
+      }
+
+      th, td {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Portal del trabajador</h1>
-    <p>Información útil, formulario y tareas del día</p>
+    <h1>portal_del_trabajador</h1>
+    <p>informacion_util, control_ipm y tareas_por_zona</p>
   </header>
 
   <main>
     <section>
-      <h2>1. Información útil</h2>
-      <div id="info-landing">
-        <div class="info-item"><strong>Horario:</strong> Cargando...</div>
-        <div class="info-item"><strong>Instrucciones:</strong> Cargando...</div>
-        <div class="info-item"><strong>Teléfono de soporte:</strong> Cargando...</div>
-        <div class="info-item"><strong>Aviso del día:</strong> Cargando...</div>
-      </div>
+      <h2>informacion_util</h2>
+      <div class="info-item"><strong>horario:</strong> <span id="horario">cargando...</span></div>
+      <div class="info-item"><strong>instrucciones:</strong> <span id="instrucciones">cargando...</span></div>
+      <div class="info-item"><strong>telefono_soporte:</strong> <span id="telefono_soporte">cargando...</span></div>
+      <div class="info-item"><strong>aviso_del_dia:</strong> <span id="aviso_del_dia">cargando...</span></div>
     </section>
 
     <section>
-      <h2>Registrar producto IPM</h2>
-      <form id="ipmForm">
-        <label for="fecha">Fecha</label>
-        <input type="date" id="fecha" name="fecha" required>
-
-
-        <label for="producto">Producto</label>
-<select id="producto" name="producto" required>
-  <option value="">Cargando productos...</option>
-</select>
-        <button type="submit">Guardar</button>
+      <h2>registrar_producto_ipm</h2>
+      <form id="formIPM">
+        <input type="date" id="fecha" required />
+        <select id="producto" required>
+          <option value="">cargando_productos...</option>
+        </select>
+        <button type="submit">guardar</button>
       </form>
-      <p id="mensajeFormulario"></p>
+      <div id="mensaje" class="mensaje"></div>
     </section>
 
     <section>
-      <h2>Control IPM</h2>
+      <h2>control_ipm</h2>
       <table>
         <thead>
           <tr>
-            <th>Fecha</th>
-            <th>Producto</th>
+            <th>fecha</th>
+            <th>producto</th>
           </tr>
         </thead>
         <tbody id="tablaIPM">
-          <tr>
-            <td colspan="2">Cargando datos...</td>
-          </tr>
+          <tr><td colspan="2">cargando...</td></tr>
         </tbody>
       </table>
     </section>
 
-   <section>
-  <h2>3. Tareas del día</h2>
-  <div id="lista-tareas">Cargando tareas...</div>
-</section>
+    <section>
+      <h2>tareas_por_zona</h2>
+      <div id="contenedorTareas" class="cargando">cargando_tareas...</div>
+    </section>
+  </main>
 
-<script>
-  const form = document.getElementById('ipmForm');
-  const mensajeFormulario = document.getElementById('mensajeFormulario');
+  <script>
+    const base_url = 'https://primary-production-2cf7.up.railway.app/webhook';
 
-  form.addEventListener('submit', async function(e) {
-    e.preventDefault();
+    function ponerFechaHoy() {
+      const inputFecha = document.getElementById('fecha');
+      const hoy = new Date();
+      const yyyy = hoy.getFullYear();
+      const mm = String(hoy.getMonth() + 1).padStart(2, '0');
+      const dd = String(hoy.getDate()).padStart(2, '0');
+      inputFecha.value = `${yyyy}-${mm}-${dd}`;
+    }
 
-    const fecha = document.getElementById('fecha').value;
-    const producto = document.getElementById('producto').value;
+    async function cargarInfoLanding() {
+      try {
+        const res = await fetch(`${base_url}/info-landing`);
+        if (!res.ok) {
+          throw new Error('error_al_cargar_info');
+        }
 
-    try {
-      const respuesta = await fetch('https://primary-production-2cf7.up.railway.app/webhook/ipm-guardar', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          fecha: fecha,
-          producto: producto
-        })
-      });
+        const data = await res.json();
 
-      const data = await respuesta.json();
+        document.getElementById('horario').textContent = data.horario || '';
+        document.getElementById('instrucciones').textContent = data.instrucciones || '';
+        document.getElementById('telefono_soporte').textContent = data.telefono_soporte || '';
+        document.getElementById('aviso_del_dia').textContent = data.aviso_del_dia || '';
+      } catch (error) {
+        document.getElementById('horario').textContent = 'error';
+        document.getElementById('instrucciones').textContent = 'error';
+        document.getElementById('telefono_soporte').textContent = 'error';
+        document.getElementById('aviso_del_dia').textContent = 'error';
+        console.error('error al cargar informacion_util:', error);
+      }
+    }
 
-      if (data.ok) {
-        mensajeFormulario.textContent = '✅ Dato guardado correctamente';
-        form.reset();
-        cargarTablaIPM();
-      } else {
-        mensajeFormulario.textContent = '❌ No se pudo guardar';
+    async function cargarProductosIPM() {
+      const select = document.getElementById('producto');
+
+      try {
+        const res = await fetch(`${base_url}/ipm-productos`);
+        if (!res.ok) {
+          throw new Error('error_al_cargar_productos');
+        }
+
+        const data = await res.json();
+        const items = Array.isArray(data.items) ? data.items : [];
+
+        select.innerHTML = '<option value="">selecciona_un_producto</option>';
+
+        for (const item of items) {
+          const option = document.createElement('option');
+          option.value = item.producto;
+          option.textContent = item.producto;
+          select.appendChild(option);
+        }
+      } catch (error) {
+        select.innerHTML = '<option value="">error_al_cargar_productos</option>';
+        console.error('error al cargar productos ipm:', error);
+      }
+    }
+
+    async function cargarTablaIPM() {
+      const tabla = document.getElementById('tablaIPM');
+
+      try {
+        const res = await fetch(`${base_url}/ipm-lista`);
+        if (!res.ok) {
+          throw new Error('error_al_cargar_tabla_ipm');
+        }
+
+        const data = await res.json();
+        const items = Array.isArray(data.items) ? data.items : [];
+
+        if (items.length === 0) {
+          tabla.innerHTML = '<tr><td colspan="2">no_hay_datos_todavia</td></tr>';
+          return;
+        }
+
+        tabla.innerHTML = items.map(item => `
+          <tr>
+            <td>${item.fecha || ''}</td>
+            <td>${item.producto || ''}</td>
+          </tr>
+        `).join('');
+      } catch (error) {
+        tabla.innerHTML = '<tr><td colspan="2">error_al_cargar_datos</td></tr>';
+        console.error('error al cargar tabla ipm:', error);
+      }
+    }
+
+    function capitalizar(texto) {
+      if (!texto) return '';
+      return texto.charAt(0).toUpperCase() + texto.slice(1);
+    }
+
+    function renderBloqueZona(nombreZona, tareas) {
+      if (!Array.isArray(tareas) || tareas.length === 0) {
+        return `
+          <div class="zona-card">
+            <h3>${capitalizar(nombreZona)}</h3>
+            <p class="zona-vacia">no_hay_tareas_pendientes</p>
+          </div>
+        `;
       }
 
-    } catch (error) {
-      mensajeFormulario.textContent = '❌ Error al conectar con el servidor';
-      console.error('error al guardar:', error);
+      const htmlTareas = tareas.map(tarea => `
+        <div class="tarea-card">
+          <div class="tarea-titulo">${tarea.tarea || ''}</div>
+
+          <div class="tarea-meta">
+            <span class="prioridad ${tarea.prioridad || 'media'}">${tarea.prioridad || 'media'}</span>
+          </div>
+
+          ${tarea.fecha ? `<div class="tarea-meta"><strong>fecha:</strong> ${tarea.fecha}</div>` : ''}
+          ${tarea.recurrente ? `<div class="tarea-meta"><strong>recurrente:</strong> ${tarea.recurrente}</div>` : ''}
+          ${tarea.dia_recurrencia ? `<div class="tarea-meta"><strong>dia_recurrencia:</strong> ${tarea.dia_recurrencia}</div>` : ''}
+
+          ${tarea.observaciones ? `<div class="tarea-obs"><strong>observaciones:</strong> ${tarea.observaciones}</div>` : ''}
+
+          <button class="boton-hecha" onclick="marcarTareaHecha('${String(tarea.id).replace(/'/g, "\\'")}')">
+            marcar_como_hecha
+          </button>
+        </div>
+      `).join('');
+
+      return `
+        <div class="zona-card">
+          <h3>${capitalizar(nombreZona)}</h3>
+          ${htmlTareas}
+        </div>
+      `;
     }
-  });
-  
-async function marcarTareaHecha(id) {
-  const confirmar = window.confirm('¿Marcar esta tarea como hecha?');
-  if (!confirmar) return;
 
-  try {
-    const formData = new URLSearchParams();
-    formData.append('id', id);
+    async function cargarTareas() {
+      const contenedor = document.getElementById('contenedorTareas');
 
-    const respuesta = await fetch('https://primary-production-2cf7.up.railway.app/webhook/tareas-eliminar', {
-      method: 'POST',
-      body: formData
+      try {
+        const res = await fetch(`${base_url}/tareas-lista`);
+        if (!res.ok) {
+          throw new Error('error_al_cargar_tareas');
+        }
+
+        const data = await res.json();
+        const itemsPorZona = data.items_por_zona || {};
+
+        const zonas = ['madres', 'esquejes', 'floracion', 'limpieza', 'mantenimiento'];
+
+        contenedor.className = 'tareas-grid';
+        contenedor.innerHTML = zonas
+          .map(zona => renderBloqueZona(zona, itemsPorZona[zona] || []))
+          .join('');
+      } catch (error) {
+        contenedor.className = 'error';
+        contenedor.textContent = 'error_al_cargar_tareas';
+        console.error('error al cargar tareas:', error);
+      }
+    }
+
+    async function marcarTareaHecha(id) {
+      const confirmar = confirm('¿marcar_esta_tarea_como_hecha?');
+      if (!confirmar) return;
+
+      try {
+        const res = await fetch(`${base_url}/tareas-eliminar`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ id })
+        });
+
+        if (!res.ok) {
+          throw new Error('error_http_al_marcar_tarea');
+        }
+
+        const data = await res.json();
+
+        if (!data.ok) {
+          throw new Error('respuesta_no_ok');
+        }
+
+        await cargarTareas();
+      } catch (error) {
+        alert('no_se_pudo_marcar_la_tarea_como_hecha');
+        console.error('error al marcar tarea como hecha:', error);
+      }
+    }
+
+    document.getElementById('formIPM').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const fecha = document.getElementById('fecha').value;
+      const producto = document.getElementById('producto').value;
+      const mensaje = document.getElementById('mensaje');
+
+      mensaje.textContent = '';
+
+      try {
+        const res = await fetch(`${base_url}/ipm-guardar`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ fecha, producto })
+        });
+
+        if (!res.ok) {
+          throw new Error('error_al_guardar_ipm');
+        }
+
+        const data = await res.json();
+
+        mensaje.textContent = data.mensaje || 'dato_guardado_correctamente';
+
+        document.getElementById('producto').value = '';
+        ponerFechaHoy();
+        await cargarTablaIPM();
+      } catch (error) {
+        mensaje.textContent = 'error_al_guardar';
+        console.error('error al guardar ipm:', error);
+      }
     });
 
-    const data = await respuesta.json();
-
-    if (data.ok) {
-      cargarTareas();
-    } else {
-      alert('No se pudo marcar la tarea como hecha');
-    }
-  } catch (error) {
-    console.error('error al marcar tarea como hecha:', error);
-    alert('Error al conectar con el servidor');
-  }
-}
-  
-async function cargarTablaIPM() {
-  const tbody = document.getElementById('tablaIPM');
-
-  try {
-    const respuesta = await fetch('https://primary-production-2cf7.up.railway.app/webhook/ipm-lista');
-    const data = await respuesta.json();
-
-    console.log('respuesta ipm:', data);
-
-    const items = Array.isArray(data)
-      ? (data[0]?.items || [])
-      : (data.items || []);
-
-    if (items.length === 0) {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="2">No hay datos todavía</td>
-        </tr>
-      `;
-      return;
-    }
-
-    tbody.innerHTML = items.map(item => `
-      <tr>
-        <td>${item.fecha || ''}</td>
-        <td>${item.producto || ''}</td>
-      </tr>
-    `).join('');
-
-  } catch (error) {
-    console.error('error al cargar ipm:', error);
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="2">Error al cargar datos</td>
-      </tr>
-    `;
-  }
-}
-
-  async function cargarTareas() {
-  const contenedor = document.getElementById('lista-tareas');
-
-  try {
-    const respuesta = await fetch('https://primary-production-2cf7.up.railway.app/webhook/tareas-lista');
-    const data = await respuesta.json();
-
-    const items = Array.isArray(data)
-      ? (data[0]?.items || [])
-      : (data.items || []);
-
-    if (items.length === 0) {
-      contenedor.innerHTML = '<div class="task">No hay tareas pendientes</div>';
-      return;
-    }
-
-    contenedor.innerHTML = items.map(item => `
-      <div class="task">
-        <strong>${item.tarea}</strong>
-        <div style="margin-top:8px;">
-          <button onclick="marcarTareaHecha('${item.id}')">Marcar como hecha</button>
-        </div>
-      </div>
-    `).join('');
-  } catch (error) {
-    console.error('error al cargar tareas:', error);
-    contenedor.innerHTML = '<div class="task">Error al cargar tareas</div>';
-  }
-}
-  
-  async function cargarProductosIPM() {
-  const selectProducto = document.getElementById('producto');
-
-  try {
-    const respuesta = await fetch('https://primary-production-2cf7.up.railway.app/webhook/ipm-productos');
-    const data = await respuesta.json();
-
-    const items = Array.isArray(data)
-      ? (data[0]?.items || [])
-      : (data.items || []);
-
-    if (items.length === 0) {
-      selectProducto.innerHTML = '<option value="">No hay productos</option>';
-      return;
-    }
-
-    selectProducto.innerHTML = `
-      <option value="">Selecciona un producto</option>
-      ${items.map(item => `<option value="${item.producto}">${item.producto}</option>`).join('')}
-    `;
-  } catch (error) {
-    console.error('error al cargar productos:', error);
-    selectProducto.innerHTML = '<option value="">Error al cargar productos</option>';
-  }
-}
-  async function cargarInfoLanding() {
-    try {
-      const response = await fetch('https://primary-production-2cf7.up.railway.app/webhook/info-landing');
-
-      if (!response.ok) {
-        throw new Error('Error al obtener los datos');
-      }
-
-      const data = await response.json();
-
-      document.getElementById('info-landing').innerHTML = `
-        <div class="info-item"><strong>Horario:</strong> ${data.horario}</div>
-        <div class="info-item"><strong>Instrucciones:</strong> ${data.instrucciones}</div>
-        <div class="info-item"><strong>Teléfono de soporte:</strong> ${data.telefono_soporte}</div>
-        <div class="info-item"><strong>Aviso del día:</strong> ${data.aviso_del_dia}</div>
-      `;
-    } catch (error) {
-      document.getElementById('info-landing').innerHTML = `
-        <div class="info-item">No se pudo cargar la información útil.</div>
-      `;
-      console.error('error en cargarInfoLanding:', error);
-    }
-  }
-
-
-  cargarTablaIPM();
-  cargarInfoLanding();
-  cargarProductosIPM();
-  cargarTareas();
-</script>
+    ponerFechaHoy();
+    cargarInfoLanding();
+    cargarProductosIPM();
+    cargarTablaIPM();
+    cargarTareas();
+  </script>
 </body>
 </html>

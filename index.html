@@ -184,8 +184,9 @@
       console.error('error al guardar:', error);
     }
   });
-async function eliminarTarea(id) {
-  const confirmar = window.confirm('¿Seguro que quieres eliminar esta tarea?');
+  
+async function marcarTareaHecha(id) {
+  const confirmar = window.confirm('¿Marcar esta tarea como hecha?');
   if (!confirmar) return;
 
   try {
@@ -202,13 +203,14 @@ async function eliminarTarea(id) {
     if (data.ok) {
       cargarTareas();
     } else {
-      alert('No se pudo eliminar la tarea');
+      alert('No se pudo marcar la tarea como hecha');
     }
   } catch (error) {
-    console.error('error al eliminar tarea:', error);
+    console.error('error al marcar tarea como hecha:', error);
     alert('Error al conectar con el servidor');
   }
 }
+  
 async function cargarTablaIPM() {
   const tbody = document.getElementById('tablaIPM');
 
@@ -268,7 +270,7 @@ async function cargarTablaIPM() {
       <div class="task">
         <strong>${item.tarea}</strong>
         <div style="margin-top:8px;">
-          <button onclick="eliminarTarea('${item.id}')">Eliminar</button>
+          <button onclick="marcarTareaHecha('${item.id}')">Marcar como hecha</button>
         </div>
       </div>
     `).join('');
@@ -277,6 +279,7 @@ async function cargarTablaIPM() {
     contenedor.innerHTML = '<div class="task">Error al cargar tareas</div>';
   }
 }
+  
   async function cargarProductosIPM() {
   const selectProducto = document.getElementById('producto');
 
